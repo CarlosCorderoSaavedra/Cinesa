@@ -1,53 +1,84 @@
 package com.example.shine.cinesa;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
-public class MainActivity extends AppCompatActivity {
-// API Key: b7eaf2884dbfe59147e9ff88fb7aee4f
-    //http://api.themoviedb.org/3/movie/550?api_key=7b5e30851a9285340e78c201c4e4ab99
+import com.example.shine.cinesa.DetailActivity;
+import com.example.shine.cinesa.Films;
+import com.example.shine.cinesa.FilmsAdapter;
+import com.example.shine.cinesa.R;
+
+public class MainActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener {
+    private GridView gridView;
+    private FilmsAdapter adaptador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        usarToolbar();
+
+        gridView = (GridView) findViewById(R.id.gridview);
+        adaptador = new FilmsAdapter(this);
+        gridView.setAdapter(adaptador);
+        gridView.setOnItemClickListener(this);
+    }
+
+    private void usarToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Films item = (Films) parent.getItemAtPosition(position);
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_PARAM_ID, item.getId());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            ActivityOptionsCompat activityOptions =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            this,
+                            new Pair<View, String>(view.findViewById(R.id.film_image),
+                                    DetailActivity.VIEW_NAME_HEADER_IMAGE)
+                    );
+
+            ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+        } else
+            startActivity(intent);
+    }
+
 }
+

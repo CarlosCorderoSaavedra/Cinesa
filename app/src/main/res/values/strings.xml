@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Cinesa</string>
     <string name="action_settings">Settings</string>
+    <string name="titulo_actividad_detalle">Actividad De Detalle</string>
+    <string name="transicional_film_name">imagen_compartida</string>
+
 </resources>

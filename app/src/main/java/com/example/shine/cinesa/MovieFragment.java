@@ -1,10 +1,17 @@
 package com.example.shine.cinesa;
 
 import android.app.Fragment;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.Toast;
+
 import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,12 +19,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Shine on 09/12/2015.
  */
 public class MovieFragment extends Fragment {
-    private ArrayAdapter<String> mMovieAdapter;
+
+    public void onCreate(Bundle savedInstanceState) {
+
+    }
+
+
+
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
